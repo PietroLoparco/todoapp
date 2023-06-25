@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todoapp/model/todo.dart';
+import 'package:todoapp/model/todo_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,10 +12,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    final todoList = todo.todoList();
+    final todoControllerAddtasks= TextEditingController();
+
+  List<todo>finalTodoList=[];
+
+  @override
+  void initState() {
+    finalTodoList=todoList;
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final todoControllerAddtasks= TextEditingController();
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: const Color.fromARGB(255, 34, 34, 32),
@@ -34,21 +46,25 @@ class _HomePageState extends State<HomePage> {
       children: [
       Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Row( 
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Icon(CupertinoIcons.home, color: Colors.white, size: 30,),
-              Title(color: Colors.white, child: const Text(
-                "Welcome home!",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30
-
-                ),))
+              Icon(CupertinoIcons.home, color: Colors.white, size: MediaQuery.of(context).size.width * 0.08,),
+              responsiveText("welcome to your to do list",  0.06, Colors.white,)
             ],
           ),
-          line(Colors.white)
+          line(Colors.white),
+
+          Expanded(
+              child: ListView(
+                children: [
+                  for(todo todos in finalTodoList.reversed)
+                  TodoWidget(
+                    todos: todos,
+                    checkboxChange: checkboxFunction, 
+                    deleteTask: deleteFunction)
+                ]) ,
+            )
         ],
       ),
       Align(
@@ -91,7 +107,14 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(top: 5,bottom: 5),
               child: ElevatedButton (
                 onPressed: () {
-                  null;
+                  if(todoControllerAddtasks.text != ''){
+                    addTodo(todoControllerAddtasks.text);
+                  }
+                  else{
+                    //message "the todo is empity"
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('The todo is empity')),);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(12, 38, 70, 1),
@@ -114,9 +137,46 @@ class _HomePageState extends State<HomePage> {
 
   Widget line(Color color) {
     return Container(
+            margin: const EdgeInsets.only(bottom: 20),
             color: color,
             height: 2,
             width: MediaQuery.of(context).size.width,
           );
   }
+
+  Widget responsiveText(String text, double fontSizeP, Color color,){
+  return LayoutBuilder(
+    builder: (BuildContext context, BoxConstraints constraints){
+      double fontSizepi = MediaQuery.of(context).size.width * fontSizeP;
+      return Text(
+            text,
+            style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: fontSizepi,
+        ));
+    },);
+  }
+
+  void addTodo(String todoText){
+    setState(() {
+      todoList.add(todo(
+        id: DateTime.now().microsecondsSinceEpoch.toString(),
+        text: todoText));
+    });
+
+    todoControllerAddtasks.clear();
+  }
+
+  void checkboxFunction(todo checkboxDone){
+    setState(() {
+      checkboxDone.done = !checkboxDone.done; });
+  }
+
+  //function for delete
+  void deleteFunction(String id){
+    setState(() {
+      todoList.removeWhere((element) => element.id == id);});
+  }
+
 } 
