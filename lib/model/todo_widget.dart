@@ -15,7 +15,7 @@ class TodoWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only( left: 30, right: 30, bottom: 20,),
       width: MediaQuery.of(context).size.width,
-      height: 30,
+      height: MediaQuery.of(context).size.height * 0.05,
       decoration: BoxDecoration(
         color: const Color.fromRGBO(12, 38, 70, 1),
         borderRadius: BorderRadius.circular(12),
