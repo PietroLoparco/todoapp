@@ -174,9 +174,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   //function for delete
-  void deleteFunction(String id){
+  void deleteFunction(String id, String text){
     setState(() {
-      todoList.removeWhere((element) => element.id == id);});
+      todoList.removeWhere((element) => element.id == id);
+      todo.delatedTodoList().add(todo(id: id, text: text));
+      });
   }
 
 } 

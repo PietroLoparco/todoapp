@@ -1,7 +1,7 @@
 // ignore: camel_case_types
 class todo{
   String? id;
-  String? text;
+  String text;
   bool done = false;
 
   todo({
