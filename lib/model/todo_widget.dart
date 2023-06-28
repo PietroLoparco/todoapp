@@ -40,6 +40,7 @@ class TodoWidget extends StatelessWidget {
           leading: Icon(
               !todos.done? CupertinoIcons.square: CupertinoIcons.checkmark_square,
               color:const Color.fromARGB(255, 148, 148, 148),
+              size: MediaQuery.of(context).size.width * 0.06,
             ),
 
         title: LayoutBuilder(
@@ -60,15 +61,18 @@ class TodoWidget extends StatelessWidget {
 
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           IconButton(
             onPressed: () {Clipboard.setData(ClipboardData(text: todos.text));},
-            icon: const Icon(CupertinoIcons.doc_on_clipboard, color:Color.fromARGB(255, 148, 148, 148),),
+            icon: Icon(CupertinoIcons.doc_on_clipboard, 
+            color:const Color.fromARGB(255, 148, 148, 148), 
+            size: MediaQuery.of(context).size.width * 0.06),
           ),
           IconButton(
             onPressed: () {deleteTask(todos.id, todos.text);},
-            icon: const Icon(CupertinoIcons.delete, color:Color.fromARGB(255, 148, 148, 148),),
+            icon: Icon(CupertinoIcons.delete, 
+            color:const Color.fromARGB(255, 148, 148, 148),
+            size: MediaQuery.of(context).size.width * 0.06),
           ),
         ],
       ),
