@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/model/todo.dart';
 import 'package:todoapp/model/todo_widget.dart';
+import '../Services/auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,12 +18,15 @@ class _HomePageState extends State<HomePage> {
 
   List<todo>finalTodoList=[];
 
+  Future<void> logOut() async{
+    await Auth().signOut();
+  }
+
   @override
   void initState() {
     finalTodoList=todoList;
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +39,17 @@ class _HomePageState extends State<HomePage> {
 
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 34, 34, 32),
+        elevation: 0,
         leading: IconButton
         (
           icon: const Icon(CupertinoIcons.bars), 
           color: Colors.white,
           onPressed: () {_scaffoldKey.currentState?.openDrawer();},),
+        actions: [
+          IconButton(onPressed: () {
+            logOut();
+          }, icon: Icon(CupertinoIcons.add))
+        ],
       ),
 
     body: Stack(
