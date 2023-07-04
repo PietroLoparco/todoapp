@@ -34,7 +34,7 @@ class TodoWidget extends StatelessWidget {
       ),
       child: ListTile(
           onTap: (){
-            checkboxChange(todos);
+            checkboxChange(todos, todos.id, todos.text);
           },
             
           leading: Icon(

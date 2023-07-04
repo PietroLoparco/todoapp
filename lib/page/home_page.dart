@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todoapp/model/todo.dart';
 import 'package:todoapp/model/todo_widget.dart';
 import '../Services/auth.dart';
+import '../Services/firebase_database.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    getData();
     finalTodoList=todoList;
     super.initState();
   }
@@ -177,17 +179,32 @@ class _HomePageState extends State<HomePage> {
     },);
   }
 
+  Future<void> uncompleted(id, text) async{
+      await Database().updateDataUncompleted(id, text);
+  }
+
+  Future<void> completed(id, text) async{
+      await Database().updateDataCompleted(id, text);
+  }
+
+  Future<void> getData() async{
+    await Database().getData();
+  }
+
   void addTodo(String todoText){
+    final id = DateTime.now().microsecondsSinceEpoch.toString();
     setState(() {
       todoList.add(todo(
-        id: DateTime.now().microsecondsSinceEpoch.toString(),
+        id: id,
         text: todoText));
     });
-
+    getData();
+    uncompleted(id, todoText);
     todoControllerAddtasks.clear();
   }
 
-  void checkboxFunction(todo checkboxDone){
+  void checkboxFunction(todo checkboxDone, id, text){
+    !checkboxDone.done ? completed(id, text) : uncompleted(id, text);
     setState(() {
       checkboxDone.done = !checkboxDone.done; });
   }
@@ -199,5 +216,4 @@ class _HomePageState extends State<HomePage> {
       todo.delatedTodoList().add(todo(id: id, text: text));
       });
   }
-
 } 

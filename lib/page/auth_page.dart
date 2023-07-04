@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Services/auth.dart';
+import '../Services/firebase_database.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -28,6 +29,7 @@ class _AuthPageState extends State<AuthPage> {
   Future<void> register() async {
     try{
       await Auth().createUserWithEmailAndPassword(email: _email.text, password: _password.text);
+      await Database().createID();
     }on FirebaseAuthException { setState(() {errorRegister = true;});}
   }
 
@@ -95,7 +97,7 @@ class _AuthPageState extends State<AuthPage> {
               ),
             ),
 
-            Container(
+            !isLogin ? Container(
                margin: const EdgeInsets.only(left: 25,right: 25,bottom: 30, top: 0),
                padding: const EdgeInsets.only(left: 20,right: 20,top: 5,bottom: 5),
                decoration: BoxDecoration(
@@ -118,7 +120,7 @@ class _AuthPageState extends State<AuthPage> {
                   )
                   ),
               ),
-            ),
+            ) : Container(),
       
             Container(
               margin: const EdgeInsets.only(bottom: 30),
