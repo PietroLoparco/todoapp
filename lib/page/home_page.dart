@@ -33,8 +33,22 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: const Color.fromARGB(255, 34, 34, 32),
-      drawer: const Drawer(
-        backgroundColor:Color.fromRGBO(28, 30, 19,1),
+      drawer: Drawer(
+        backgroundColor: const Color.fromRGBO(28, 30, 19,1),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            margin: const EdgeInsets.all(5),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.05,
+            child: Align(
+             alignment: Alignment.center, 
+             child: TextButton(
+              child: const Text('LogOut', style: TextStyle(color: Colors.grey),),
+              onPressed: () {logOut();},)),
+             
+          ),
+        ),
       ),
 
       appBar: AppBar(
@@ -45,11 +59,6 @@ class _HomePageState extends State<HomePage> {
           icon: const Icon(CupertinoIcons.bars), 
           color: Colors.white,
           onPressed: () {_scaffoldKey.currentState?.openDrawer();},),
-        actions: [
-          IconButton(onPressed: () {
-            logOut();
-          }, icon: Icon(CupertinoIcons.add))
-        ],
       ),
 
     body: Stack(
