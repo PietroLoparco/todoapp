@@ -54,7 +54,7 @@ class Database{
     for(int i = 0; i < values.length; i += 2){
       int j = i+1;
       todo.todoList().add(todo(id: values[i], text: values[j]));
-      print(todo.todoList().length);
+      print(values[i]);
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/model/todo.dart';
@@ -187,8 +188,34 @@ class _HomePageState extends State<HomePage> {
       await Database().updateDataCompleted(id, text);
   }
 
-  Future<void> getData() async{
-    await Database().getData();
+  Future<void> getData() async {
+    
+    String documentId = Auth().currentUser!.uid;
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshotUncompleted =
+      await FirebaseFirestore.instance.collection('todoUncompleted').doc(documentId).get();
+    
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshotCompleted =
+      await FirebaseFirestore.instance.collection('todoCompleted').doc(documentId).get();
+
+
+    var dataUn = documentSnapshotUncompleted.data().toString().replaceAll('}', '');
+    var dataCo = documentSnapshotCompleted.data().toString().replaceAll('}', '');
+    
+    List<String> valuesUn = dataUn.split(RegExp(r'[,|:]'));
+    List<String> valuesCo = dataCo.split(RegExp(r'[,|:]'));
+    
+    load(valuesCo, true);  
+    load(valuesUn, false);  
+ 
+  }
+
+  void load(List<String> values, bool check) {
+    for(int i = 0; i < values.length; i += 2){
+      int j = i+1;
+      setState(() {
+        todoList.add(todo(id: values[i], text: values[j], done: check));
+      });
+    }
   }
 
   void addTodo(String todoText){
@@ -198,7 +225,7 @@ class _HomePageState extends State<HomePage> {
         id: id,
         text: todoText));
     });
-    getData();
+    //getData();
     uncompleted(id, todoText);
     todoControllerAddtasks.clear();
   }
