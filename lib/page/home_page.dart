@@ -198,8 +198,8 @@ class _HomePageState extends State<HomePage> {
       await FirebaseFirestore.instance.collection('todoCompleted').doc(documentId).get();
 
 
-    var dataUn = documentSnapshotUncompleted.data().toString().replaceAll('}', '');
-    var dataCo = documentSnapshotCompleted.data().toString().replaceAll('}', '');
+    var dataUn = documentSnapshotUncompleted.data().toString().replaceAll(RegExp(r'[{}]'), '');
+    var dataCo = documentSnapshotCompleted.data().toString().replaceAll(RegExp(r'[{}]'), '');
     
     List<String> valuesUn = dataUn.split(RegExp(r'[,|:]'));
     List<String> valuesCo = dataCo.split(RegExp(r'[,|:]'));

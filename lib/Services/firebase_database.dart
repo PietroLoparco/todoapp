@@ -1,6 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todoapp/model/todo.dart';
 import 'auth.dart';
 
 class Database{
@@ -40,23 +39,4 @@ class Database{
   Future<void> removeDataCompleted(id) async{
     await todoCompleted.doc(uid).update({'$id' : FieldValue.delete()}); 
   }
-
-  Future<void> getData() async {
-    
-    String documentId = uid!;
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-      await FirebaseFirestore.instance.collection('todoUncompleted').doc(documentId).get();
-    
-    var data = documentSnapshot.data().toString();
-    
-    List<String> values = data.split(RegExp(r'[,|:]'));
-    
-    for(int i = 0; i < values.length; i += 2){
-      int j = i+1;
-      todo.todoList().add(todo(id: values[i], text: values[j]));
-      print(values[i]);
-    }
-  }
 }
-
-//TODO: provare a inserire la funzione o almeno la parte del for in home_page
