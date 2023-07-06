@@ -17,19 +17,13 @@ class Database{
   }
 
   Future<void> updateDataUncompleted(id, todoTetxt) async{
-  removeDataCompleted(id);
-  await todoUncompleted.doc(uid)
-    .update({
-      '$id' : todoTetxt
-    });
+    removeDataCompleted(id);
+    await todoUncompleted.doc(uid).update({'$id' : todoTetxt});
   }
 
   Future<void> updateDataCompleted(id, todoTetxt) async{
-  removeDataUncompleted(id);
-  await todoCompleted.doc(uid)
-  .update({
-      '$id' : todoTetxt
-    });
+    removeDataUncompleted(id);
+    await todoCompleted.doc(uid).update({'$id' : todoTetxt});
   }
 
   Future<void> removeDataUncompleted(id) async{
