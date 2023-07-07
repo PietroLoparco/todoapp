@@ -11,5 +11,4 @@ class todo{
   });
 
   static List<todo>todoList(){return [];}
-  static List<todo>delatedTodoList(){return [];}
 }

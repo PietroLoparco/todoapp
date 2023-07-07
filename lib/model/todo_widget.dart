@@ -69,7 +69,7 @@ class TodoWidget extends StatelessWidget {
             size: MediaQuery.of(context).size.width * 0.06),
           ),
           IconButton(
-            onPressed: () {deleteTask(todos.id, todos.text);},
+            onPressed: () {deleteTask(todos, todos.id, todos.text);},
             icon: Icon(CupertinoIcons.delete, 
             color:const Color.fromARGB(255, 148, 148, 148),
             size: MediaQuery.of(context).size.width * 0.06),

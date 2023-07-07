@@ -180,12 +180,20 @@ class _HomePageState extends State<HomePage> {
     },);
   }
 
+  Future<void> deleteCompleted(id) async{
+    await Database().removeDataCompleted(id);
+  }
+
+  Future<void> deleteUncompleted(id) async{
+    await Database().removeDataUncompleted(id);
+  }
+
   Future<void> uncompleted(id, text) async{
-      await Database().updateDataUncompleted(id, text);
+    await Database().updateDataUncompleted(id, text);
   }
 
   Future<void> completed(id, text) async{
-      await Database().updateDataCompleted(id, text);
+    await Database().updateDataCompleted(id, text);
   }
 
   Future<void> getData() async {
@@ -210,10 +218,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void load(List<String> values, bool check) {
-    for(int i = 0; i < values.length; i += 2){
-      int j = i+1;
+    int j;
+    for(int i = 0; i < values.length - 1; i += 2){
+      j = i+1;
       setState(() {
-        todoList.add(todo(id: values[i], text: values[j], done: check));
+        todoList.add(todo(id: values[i].replaceAll(' ', ''), text: values[j], done: check));
       });
     }
   }
@@ -237,10 +246,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   //function for delete
-  void deleteFunction(String id, String text){
+  void deleteFunction(todo checkboxDone, String id, String text){
     setState(() {
-      todoList.removeWhere((element) => element.id == id);
-      todo.delatedTodoList().add(todo(id: id, text: text));
+        todoList.removeWhere((element) => element.id == id);
+        checkboxDone.done ? deleteCompleted(id) : deleteUncompleted(id);
       });
   }
 } 
